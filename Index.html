@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Mini Apps</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>My Mini Apps</h1>
+  </header>
+
+  <main id="home">
+    <div class="app-grid">
+      <div class="app-card" onclick="openApp('calcApp')">
+        <img src="images/calculator.png" alt="Calculator Logo" />
+        <h3>Calculator</h3>
+      </div>
+      <div class="app-card" onclick="openApp('flappyApp')">
+        <img src="images/flappy.png" alt="Flappy Bird Logo" />
+        <h3>Flappy Bird</h3>
+      </div>
+    </div>
+  </main>
+
+  <section id="calcApp" class="app hidden">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <h2>Calculator</h2>
+    <div class="calc">
+      <input id="display" readonly />
+      <div class="keys">
+        <button onclick="press('7')">7</button><button onclick="press('8')">8</button><button onclick="press('9')">9</button><button onclick="press('/')">÷</button>
+        <button onclick="press('4')">4</button><button onclick="press('5')">5</button><button onclick="press('6')">6</button><button onclick="press('*')">×</button>
+        <button onclick="press('1')">1</button><button onclick="press('2')">2</button><button onclick="press('3')">3</button><button onclick="press('-')">−</button>
+        <button onclick="press('0')">0</button><button onclick="press('.')">.</button><button onclick="calc()">=</button><button onclick="press('+')">+</button>
+        <button onclick="clearAll()" class="wide">C</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="flappyApp" class="app hidden">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <h2>Flappy Bird Clone</h2>
+    <canvas id="flappy" width="320" height="480"></canvas>
+    <p>Tap anywhere to flap!</p>
+  </section>
+
+  <script src="calculator.js"></script>
+  <script src="flappy.js"></script>
+
+  <script>
+    function openApp(id){document.getElementById('home').classList.add('hidden');document.getElementById(id).classList.remove('hidden');}
+    function goHome(){document.querySelectorAll('.app').forEach(a=>a.classList.add('hidden'));document.getElementById('home').classList.remove('hidden');}
+  </script>
+</body>
+  </html>
