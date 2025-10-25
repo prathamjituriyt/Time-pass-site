@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stylish Calculator</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #28313B, #485461);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: white;
+  }
+  .calculator {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  input {
+    width: 250px;
+    height: 50px;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    text-align: right;
+    padding-right: 10px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
+  button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.3em;
+    margin: 5px;
+    border: none;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #00B4DB;
+    transform: scale(1.1);
+  }
+  .back {
+    margin-top: 20px;
+    background: #0077ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <h2>🧮 Stylish Calculator</h2>
+  <div class="calculator">
+    <input type="text" id="display" disabled>
+    <div>
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteLast()">⌫</button>
+      <button onclick="append('%')">%</button>
+      <button onclick="append('/')">÷</button>
+    </div>
+    <div>
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('*')">×</button>
+    </div>
+    <div>
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('-')">−</button>
+    </div>
+    <div>
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('+')">+</button>
+    </div>
+    <div>
+      <button onclick="append('0')">0</button>
+      <button onclick="append('.')">.</button>
+      <button onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <button class="back" onclick="location.href='index.html'">🏠 Back to Home</button>
+
+  <script>
+    const display = document.getElementById('display');
+    function append(val){ display.value += val; }
+    function clearDisplay(){ display.value = ''; }
+    function deleteLast(){ display.value = display.value.slice(0, -1); }
+    function calculate(){
+      try { display.value = eval(display.value); }
+      catch { display.value = 'Error'; }
+    }
+  </script>
+</body>
+</html>
