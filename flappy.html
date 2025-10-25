@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy Bird Game</title>
+<style>
+  body {
+    background: linear-gradient(135deg, #74ABE2, #5563DE);
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+  }
+  canvas {
+    background: #70c5ce;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .menu {
+    text-align: center;
+  }
+  .btn {
+    background: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <h2>🐥 Flappy Bird</h2>
+  <canvas id="gameCanvas" width="320" height="480"></canvas>
+  <div class="menu">
+    <div id="score">Score: 0 | High Score: 0</div>
+    <button class="btn" onclick="startGame()">▶ Start Game</button>
+    <button class="btn" onclick="location.href='index.html'">🏠 Back to Home</button>
+  </div>
+
+  <script>
+    let canvas = document.getElementById("gameCanvas");
+    let ctx = canvas.getContext("2d");
+    let birdY, birdV, pipes, score, highScore, playing = false;
+
+    function resetGame(){
+      birdY = 200;
+      birdV = 0;
+      pipes = [];
+      score = 0;
+    }
+
+    function startGame(){
+      playing = true;
+      resetGame();
+      loop();
+    }
+
+    function loop(){
+      if(!playing) return;
+      ctx.fillStyle = "#70c5ce";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      birdV += 0.4;
+      birdY += birdV;
+      if(birdY > canvas.height-20) playing = false;
+
+      if(Math.random() < 0.02){
+        let top = Math.random()*200+50;
+        pipes.push({x:canvas.width, top:top});
+      }
+
+      ctx.fillStyle = "yellow";
+      ctx.beginPath();
+      ctx.arc(50, birdY, 12, 0, Math.PI*2);
+      ctx.fill();
+
+      for(let i=0;i<pipes.length;i++){
+        pipes[i].x -= 2;
+        ctx.fillStyle = "green";
+        ctx.fillRect(pipes[i].x, 0, 40, pipes[i].top);
+        ctx.fillRect(pipes[i].x, pipes[i].top+100, 40, canvas.height);
+        
+        if(pipes[i].x===50) score++;
+        if(50>pipes[i].x && 50<pipes[i].x+40 &&
+           (birdY<pipes[i].top || birdY>pipes[i].top+100)) playing = false;
+      }
+
+      document.getElementById("score").innerText = `Score: ${score} | High Score: ${Math.max(score, highScore||0)}`;
+      if(playing) requestAnimationFrame(loop);
+      else {
+        highScore = Math.max(score, highScore || 0);
+        localStorage.setItem("flappyHighScore", highScore);
+      }
+    }
+
+    document.body.addEventListener("click", () => { if(playing) birdV = -6; });
+    highScore = localStorage.getItem("flappyHighScore") || 0;
+  </script>
+</body>
+</html>
