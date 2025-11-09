@@ -21,7 +21,7 @@
     background: #70c5ce;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    touch-action: none; /* Prevents scroll on mobile tap */
+    touch-action: none;
   }
   .menu {
     text-align: center;
@@ -50,13 +50,12 @@
     const ctx = canvas.getContext("2d");
 
     let birdY, birdV, pipes, score, highScore, playing = false;
-    let gravity = 0.4, jumpForce = -6, pipeSpeed = 2;
+    const gravity = 0.4, jumpForce = -6, pipeSpeed = 2;
 
-    // Web Audio setup
+    // --- Sound system ---
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioCtx();
-
-    function playSound(freq, type = "sine", duration = 0.15, volume = 0.2) {
+    function playSound(freq, type="sine", duration=0.15, volume=0.2) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = type;
@@ -67,13 +66,11 @@
       osc.start();
       osc.stop(audioCtx.currentTime + duration);
     }
+    const jumpSound = () => playSound(600, "square", 0.1, 0.2);
+    const hitSound = () => playSound(120, "sawtooth", 0.3, 0.3);
+    const scoreSound = () => playSound(800, "triangle", 0.15, 0.2);
 
-    // Sound effects
-    function jumpSound() { playSound(600, "square", 0.1, 0.15); }
-    function hitSound() { playSound(120, "sawtooth", 0.3, 0.3); }
-    function scoreSound() { playSound(800, "triangle", 0.15, 0.2); }
-
-    // Resize canvas for mobile screens
+    // --- Resize canvas for mobile screens ---
     function resizeCanvas() {
       const scale = Math.min(window.innerWidth / 320, window.innerHeight / 480);
       canvas.style.transform = `scale(${scale})`;
@@ -110,20 +107,20 @@
         playing = false;
       }
 
-      // Spawn new pipes
+      // Spawn pipes occasionally
       if (Math.random() < 0.02) {
         let top = Math.random() * 180 + 40;
         pipes.push({ x: canvas.width, top });
       }
 
-      // Bird
+      // Bird draw
       ctx.fillStyle = "yellow";
       ctx.beginPath();
       ctx.arc(50, birdY, 12, 0, Math.PI * 2);
       ctx.fill();
 
       // Difficulty scaling
-      let gap = Math.max(90, 130 - score * 2); // gap shrinks as score rises
+      let gap = Math.max(100, 140 - score * 2);
 
       // Pipes
       for (let i = 0; i < pipes.length; i++) {
@@ -131,7 +128,9 @@
         let top = pipes[i].top;
 
         ctx.fillStyle = "green";
+        // top pipe
         ctx.fillRect(pipes[i].x, 0, 40, top);
+        // bottom pipe (properly sized)
         ctx.fillRect(pipes[i].x, top + gap, 40, canvas.height - (top + gap));
 
         // Scoring
@@ -154,7 +153,7 @@
       // Remove off-screen pipes
       pipes = pipes.filter(p => p.x > -40);
 
-      // Draw score
+      // Draw score text
       ctx.fillStyle = "white";
       ctx.font = "16px Poppins";
       ctx.fillText(`Score: ${score}`, 10, 20);
@@ -171,7 +170,7 @@
     }
 
     function showGameOver() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.fillStyle = "rgba(0,0,0,0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "white";
       ctx.font = "24px Poppins";
@@ -190,9 +189,13 @@
       }
     }
 
-    // Controls for desktop and mobile
-    document.body.addEventListener("click", flap);
-    document.body.addEventListener("touchstart", flap);
+    // --- FIX: Avoid double jump ---
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch) {
+      document.body.addEventListener("touchstart", flap, { passive: true });
+    } else {
+      document.body.addEventListener("mousedown", flap);
+    }
 
     highScore = localStorage.getItem("flappyHighScore") || 0;
   </script>
