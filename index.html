@@ -3,78 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jituri Game Hub</title>
+  <title>My Mini Games</title>
   <style>
+    /* Animated Gradient Background */
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
-      color: white;
-      text-align: center;
+      height: 100vh;
+      background: linear-gradient(270deg, #00c6ff, #0072ff, #6a11cb, #2575fc);
+      background-size: 800% 800%;
+      animation: gradientMove 10s ease infinite;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      font-family: 'Poppins', sans-serif;
     }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      text-align: center;
+    }
+
     h1 {
+      color: white;
       font-size: 2em;
       margin-bottom: 30px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
     }
-    .container {
+
+    .cards {
       display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
+      gap: 30px;
       justify-content: center;
+      flex-wrap: wrap;
     }
+
     .card {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255,255,255,0.15);
       border-radius: 20px;
       padding: 20px;
       width: 150px;
-      transition: 0.4s;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      height: 150px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
+
     .card:hover {
-      transform: scale(1.1);
-      background: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
-    img {
+
+    .card img {
       width: 80px;
       height: 80px;
-      border-radius: 15px;
-      margin-bottom: 10px;
     }
-    a {
-      text-decoration: none;
+
+    .card p {
       color: white;
       font-weight: bold;
+      margin-top: 10px;
     }
+
     footer {
       position: absolute;
       bottom: 10px;
-      font-size: 14px;
-      color: #ccc;
+      color: white;
+      font-size: 0.8em;
+      text-shadow: 1px 1px 3px black;
     }
   </style>
 </head>
 <body>
-  <h1>🎮 Jituri Game & Tool Hub</h1>
   <div class="container">
-    <div class="card">
-      <a href="calculator.html">
+    <h1>My Mini Games & Tools</h1>
+    <div class="cards">
+      <div class="card" onclick="location.href='calculator.html'">
         <img src="https://cdn-icons-png.flaticon.com/512/992/992700.png" alt="Calculator">
-        <div>Calculator</div>
-      </a>
+        <p>Calculator</p>
+      </div>
+      <div class="card" onclick="location.href='flappy.html'">
+         <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Flappy Game">
+        <p>Flappy Dragon</p>
+      </div>
     </div>
-    <div class="card">
-      <a href="flappy.html">
-        <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Flappy Bird">
-        <div>Flappy Bird</div>
-      </a>
-    </div>
+    <footer>© 2025 Pratham Jituri</footer>
   </div>
-  <footer>© 2025 Jituri Family</footer>
 </body>
 </html>
